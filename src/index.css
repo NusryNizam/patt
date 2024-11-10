@@ -1,4 +1,4 @@
-@import '@penpot/plugin-styles/styles.css';
+@import "@penpot/plugin-styles/styles.css";
 
 *,
 *::before,
@@ -6,4 +6,363 @@
   box-sizing: border-box;
   margin: 0;
   font-weight: normal;
+}
+
+/* custom */
+
+.app {
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-flow: row;
+}
+
+.preview {
+  /* border-radius: 16px; */
+}
+
+.size-label {
+  /* background-color: rgba(0, 0, 0, 0.4); */
+  font-weight: 400;
+  line-height: 16px;
+  padding: 0 4px;
+  border-radius: 4px;
+  position: absolute;
+  z-index: 5;
+  bottom: 8px;
+  left: 8px;
+  font-size: 11px;
+}
+
+.divider {
+  display: block;
+  margin: 16px -20px;
+  border-bottom: 1px solid var(--db-quaternary);
+}
+
+/* .preview-svg {
+  margin: 16px 0 16px 16px;
+  border-radius: 16px;
+} */
+
+.form {
+  display: flex;
+  flex-flow: column;
+  width: 260px;
+  height: 600px;
+  border-left: 1px solid var(--db-quaternary);
+}
+
+.fields {
+  padding: 20px 20px 24px;
+  height: 600px;
+  overflow: scroll;
+}
+
+.button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 12px 20px;
+  border-top: 1px solid var(--db-quaternary);
+  gap: 8px;
+}
+
+.mantine-Button-root {
+  height: 32px;
+  border-radius: 6px;
+  overflow: visible;
+  line-height: 32px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.secondary-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.secondary-button:hover {
+  background-color: transparent;
+}
+
+.counter-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+
+.mantine-Textarea-root {
+  margin-bottom: 16px;
+}
+
+.mantine-InputWrapper-label {
+  font-size: 11px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.value-span {
+  margin-left: 4px;
+  color: var(--df-primary);
+}
+
+.unit-span {
+  margin-left: -2px;
+}
+
+.mantine-Input-root {
+}
+
+.mantine-ColorInput-root {
+  margin-bottom: 16px;
+  font-size: 13px;
+}
+
+.mantine-ColorInput-input {
+  text-transform: uppercase;
+}
+
+.mantine-Input-input {
+  font-size: 13px;
+}
+
+.mantine-NumberInput-root {
+}
+
+.mantine-Select-root {
+  margin-bottom: 16px;
+}
+
+.mantine-Select-option {
+  font-family: "Inter";
+  height: 32px;
+  padding: 0 16px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 1);
+  border-radius: 0;
+}
+
+.mantine-Popover-dropdown {
+  padding: 8px 0 8px;
+  border-radius: 5px;
+  font-size: 11px;
+  box-shadow: 0 8px 11px rgba(0, 0, 0, 0.11);
+}
+
+.mantine-Select-option:hover {
+}
+
+.mantine-Select-option[aria-selected="false"] {
+  /* color: rgba(255, 255, 255, 1); */
+}
+
+.mantine-Slider-root {
+  margin-bottom: 16px;
+}
+
+.mantine-Slider-bar {
+}
+
+.mantine-Slider-thumb {
+}
+
+.mantine-Checkbox-root {
+  margin-bottom: 8px;
+}
+
+.mantine-Checkbox-input:checked {
+}
+
+.slider-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Css Reset */
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+select,
+input {
+  /* background-color: var(--db-quaternary); */
+  /* color: var(--df-primary); */
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  accent-color: var(--da-primary);
+}
+
+input[type="color"] {
+  padding: 2px 4px;
+}
+
+.form label {
+  font-size: 11px;
+  display: block;
+  font-weight: 500;
+  line-height: 18px;
+  color: var(--df-secondary);
+  margin-bottom: var(--spacing-4);
+}
+
+.fields > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 1rem;
+}
+
+.primary-button {
+  background-color: var(--da-primary);
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  color: var(--db-primary);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.primary-button:disabled {
+  background-color: var(--da-primary-muted);
+}
+
+.secondary-button {
+  padding: 0.5rem 0.75rem;
+  border-radius: 8px;
+  /* color: var(--df-primary); */
+  cursor: pointer;
 }

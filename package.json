@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mantine/core": "^7.13.5",
+    "@mantine/hooks": "^7.13.5",
     "@penpot/plugin-styles": "^0.8.0",
     "@penpot/plugin-types": "^1.0.0",
     "react": "^18.2.0",
