@@ -1,9 +1,0 @@
-@import '@penpot/plugin-styles/styles.css';
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  font-weight: normal;
-}

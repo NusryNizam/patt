@@ -1,7 +1,0 @@
-{
-  "name": "Vue example plugin",
-  "description": "Example plugin with vue",
-  "code": "/plugin.js",
-  "icon": "/icon.png",
-  "permissions": ["page:read", "content:read", "file:read", "selection:read"]
-}
