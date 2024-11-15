@@ -1,5 +1,4 @@
-import { useState, useRef, useCallback, ChangeEvent } from "react";
-import { Popover } from "@mantine/core";
+import { useState, useRef, useCallback } from "react";
 import ColorInput from "./ColorInput";
 
 const CustomColorInput = ({ label, value, onChange, ...props }) => {
@@ -7,7 +6,7 @@ const CustomColorInput = ({ label, value, onChange, ...props }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef(null);
 
-  const handleSwatchClick = useCallback((event: ChangeEvent) => {
+  const handleSwatchClick = useCallback((event: any) => {
     event.preventDefault();
     event.stopPropagation();
     setOpened(true);
@@ -16,7 +15,7 @@ const CustomColorInput = ({ label, value, onChange, ...props }) => {
     }
   }, []);
 
-  const handleContainerClick = useCallback((event) => {
+  const handleContainerClick = useCallback((event: any) => {
     // Prevent closing the popover when clicking on the input or swatch
     event.stopPropagation();
   }, []);
@@ -49,33 +48,23 @@ const CustomColorInput = ({ label, value, onChange, ...props }) => {
   );
 
   return (
-    <Popover
-      opened={opened}
-      onClose={() => setOpened(false)}
-      withinPortal={false}
-      clickOutsideEvents={["mousedown", "touchstart"]}
-      closeOnClickOutside={true}
-    >
-      <Popover.Target>
-        <div>
-          <ColorInput
-            ref={inputRef}
-            label={label}
-            value={value}
-            onChange={onChange}
-            inputContainer={inputContainer}
-            onFocus={() => setOpened(true)}
-            popoverProps={{
-              opened,
-              onClose: () => setOpened(false),
-              withinPortal: false,
-              ...props.popoverProps,
-            }}
-            {...props}
-          />
-        </div>
-      </Popover.Target>
-    </Popover>
+    <div>
+      <ColorInput
+        ref={inputRef}
+        label={label}
+        value={value}
+        onChange={onChange}
+        inputContainer={inputContainer}
+        onFocus={() => setOpened(true)}
+        popoverProps={{
+          opened,
+          onClose: () => setOpened(false),
+          withinPortal: false,
+          ...props.popoverProps,
+        }}
+        {...props}
+      />
+    </div>
   );
 };
 

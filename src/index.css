@@ -66,15 +66,6 @@
   gap: 8px;
 }
 
-.mantine-Button-root {
-  height: 32px;
-  border-radius: 6px;
-  overflow: visible;
-  line-height: 32px;
-  font-size: 11px;
-  font-weight: 500;
-}
-
 .secondary-button {
   border: none;
   background-color: transparent;
@@ -92,17 +83,6 @@
   gap: 20px;
 }
 
-.mantine-Textarea-root {
-  margin-bottom: 16px;
-}
-
-.mantine-InputWrapper-label {
-  font-size: 11px;
-  margin-bottom: 8px;
-  font-weight: 500;
-  line-height: 18px;
-}
-
 .value-span {
   margin-left: 4px;
   color: var(--df-primary);
@@ -110,69 +90,6 @@
 
 .unit-span {
   margin-left: -2px;
-}
-
-.mantine-Input-root {
-}
-
-.mantine-ColorInput-root {
-  margin-bottom: 16px;
-  font-size: 13px;
-}
-
-.mantine-ColorInput-input {
-  text-transform: uppercase;
-}
-
-.mantine-Input-input {
-  font-size: 13px;
-}
-
-.mantine-NumberInput-root {
-}
-
-.mantine-Select-root {
-  margin-bottom: 16px;
-}
-
-.mantine-Select-option {
-  font-family: "Inter";
-  height: 32px;
-  padding: 0 16px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 1);
-  border-radius: 0;
-}
-
-.mantine-Popover-dropdown {
-  padding: 8px 0 8px;
-  border-radius: 5px;
-  font-size: 11px;
-  box-shadow: 0 8px 11px rgba(0, 0, 0, 0.11);
-}
-
-.mantine-Select-option:hover {
-}
-
-.mantine-Select-option[aria-selected="false"] {
-  /* color: rgba(255, 255, 255, 1); */
-}
-
-.mantine-Slider-root {
-  margin-bottom: 16px;
-}
-
-.mantine-Slider-bar {
-}
-
-.mantine-Slider-thumb {
-}
-
-.mantine-Checkbox-root {
-  margin-bottom: 8px;
-}
-
-.mantine-Checkbox-input:checked {
 }
 
 .slider-disabled {
@@ -320,8 +237,6 @@ table {
 
 select,
 input {
-  /* background-color: var(--db-quaternary); */
-  /* color: var(--df-primary); */
   padding: 0.5rem;
   border-radius: 0.25rem;
   accent-color: var(--da-primary);
@@ -360,9 +275,16 @@ input[type="color"] {
   background-color: var(--da-primary-muted);
 }
 
+.primary-button:hover {
+  background-color: var(--da-tertiary);
+}
+
 .secondary-button {
   padding: 0.5rem 0.75rem;
   border-radius: 8px;
-  /* color: var(--df-primary); */
   cursor: pointer;
+}
+
+.secondary-button:hover {
+  background-color: var(--db-quaternary);
 }

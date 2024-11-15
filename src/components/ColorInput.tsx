@@ -45,7 +45,6 @@ function ColorInput({ label, value, onChange, inputContainer, ...props }) {
             onClick={handleClosePopover}
           >
             <p>Color Picker Popover</p>
-            {/* You can add a custom color picker UI here */}
           </div>
         )}
       </div>

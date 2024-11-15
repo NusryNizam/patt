@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./App.css";
-import { MantineProvider } from "@mantine/core";
 import CustomColorInput from "./components/CustomColorInput";
 
 function App() {
@@ -8,8 +7,6 @@ function App() {
   const initialTheme = url.searchParams.get("theme");
 
   const [theme, setTheme] = useState(initialTheme || null);
-
-  // return <div data-theme={theme}>Welcome to your plugin!</div>;
 
   const [rows, setRows] = useState(20);
   const [columns, setColumns] = useState(20);
@@ -28,7 +25,15 @@ function App() {
   const [ySpacing, setYSpacing] = useState(1);
   const [xOffset, setXOffset] = useState(0);
   const [yOffset, setYOffset] = useState(0);
-  const [field, setField] = useState([]);
+  const [field, setField] = useState<
+    {
+      x: number;
+      y: number;
+      angle: number;
+      length: number;
+      r: number;
+    }[]
+  >([]);
   const [fillParent, setFillParent] = useState(true);
   const [pastedSvg, setPastedSvg] = useState("");
   const [customShapeSource, setCustomShapeSource] = useState(null);
@@ -39,7 +44,7 @@ function App() {
   const [actualFrameHeight, setActualFrameHeight] = useState(600);
   const [backgroundColor, setBackgroundColor] = useState("#1e1e1e");
   const [shapeColor, setShapeColor] = useState("#ffffff");
-  const [customShape, setCustomShape] = useState(null);
+  const [customShape, setCustomShape] = useState<string | null>(null);
   const [customShapeViewBox, setCustomShapeViewBox] = useState(null);
   const [userChangedColor, setUserChangedColor] = useState(false);
   const [isWaitingForVectorSelection, setIsWaitingForVectorSelection] =
@@ -301,37 +306,9 @@ function App() {
         }
       }
     });
-    // window.onmessage = (event) => {
-    //   const message = event.data.pluginMessage;
-    //   console.log("ONMSG: ", message);
-    //   if (message.type === "board-selected") {
-    //     const { width, height, backgroundColor: frameBgColor } = message;
-    //     setActualFrameWidth(width);
-    //     setActualFrameHeight(height);
-    //     updateFrameDimensions(width, height);
-    //     if (frameBgColor && !userOverrideBgColor) {
-    //       setBackgroundColor(frameBgColor);
-    //       const complementaryColor = getComplementaryColor(frameBgColor);
-    //       setShapeColor(complementaryColor);
-    //     }
-    //   } else if (message.type === "vector-selected") {
-    //     if (message.svg) {
-    //       parseSvgString(message.svg, "figma");
-    //       setIsWaitingForVectorSelection(false);
-    //     } else {
-    //       console.error("Received vector-selected message without SVG data");
-    //     }
-    //   } else if (message.type === "no-frame-selected") {
-    //     setActualFrameWidth(600);
-    //     setActualFrameHeight(600);
-    //     updateFrameDimensions(600, 600);
-    //     setBackgroundColor("#1e1e1e");
-    //     setShapeColor("#ffffff");
-    //   }
-    // };
   }, [updateFrameDimensions, getComplementaryColor, userOverrideBgColor]);
 
-  const parseSvgString = (svgString, source) => {
+  const parseSvgString = (svgString: string, source: string) => {
     const parser = new DOMParser();
     const svgDoc = parser.parseFromString(svgString, "image/svg+xml");
     const svgElement = svgDoc.querySelector("svg");
@@ -392,20 +369,6 @@ function App() {
       const svgElement = svgDoc.documentElement;
 
       const updateColors = (element) => {
-        if (customShapeSource === "figma") {
-          if (
-            element.hasAttribute("fill") &&
-            element.getAttribute("fill") !== "none"
-          ) {
-            element.setAttribute("fill", shapeColor);
-          }
-          if (
-            element.hasAttribute("stroke") &&
-            element.getAttribute("stroke") !== "none"
-          ) {
-            element.setAttribute("stroke", shapeColor);
-          }
-        }
         Array.from(element.children).forEach(updateColors);
       };
 
@@ -458,20 +421,6 @@ function App() {
         const svgElement = svgDoc.documentElement;
 
         const updateColors = (element) => {
-          if (customShapeSource === "figma" || gradientType !== "none") {
-            if (
-              element.hasAttribute("fill") &&
-              element.getAttribute("fill") !== "none"
-            ) {
-              element.setAttribute("fill", color);
-            }
-            if (
-              element.hasAttribute("stroke") &&
-              element.getAttribute("stroke") !== "none"
-            ) {
-              element.setAttribute("stroke", color);
-            }
-          }
           Array.from(element.children).forEach(updateColors);
         };
 
@@ -619,7 +568,7 @@ function App() {
     setPastedSvg("");
   };
 
-  const sendSvgToFigma = () => {
+  const sendSvgToPenpot = () => {
     if (svgRef.current) {
       const svgElement = svgRef.current.cloneNode(true);
       const scaleX = actualFrameWidth / frameWidth;
@@ -682,14 +631,6 @@ function App() {
         {label}: <span className="value-span">{value.toFixed(2)}</span>{" "}
         <span className="unit-span">{unit}</span>
       </label>
-      {/* <Slider
-        min={min}
-        max={max}
-        step={step}
-        value={value}
-        onChange={setValue}
-        disabled={disabled}
-      /> */}
 
       <div>
         <input
@@ -707,419 +648,280 @@ function App() {
   );
 
   return (
-    <MantineProvider defaultColorScheme={theme as "light" | "dark"}>
-      <div className="app" data-theme={theme}>
-        <div
-          className="preview"
+    <div className="app" data-theme={theme}>
+      <div
+        className="preview"
+        style={{
+          width: 600,
+          height: 600,
+          margin: "0 auto",
+          position: "relative",
+        }}
+      >
+        <svg
+          ref={svgRef}
+          width={frameWidth}
+          height={frameHeight}
+          viewBox={`0 0 ${frameWidth} ${frameHeight}`}
           style={{
-            width: 600,
-            height: 600,
-            margin: "0 auto",
-            position: "relative",
+            backgroundColor: backgroundColor,
           }}
         >
-          <svg
-            ref={svgRef}
-            width={frameWidth}
-            height={frameHeight}
-            viewBox={`0 0 ${frameWidth} ${frameHeight}`}
-            style={{
-              backgroundColor: backgroundColor,
-              // display: "block",
-              // position: "absolute",
-              // top: "50%",
-              // left: "50%",
-              // transform: "translate(-50%, -50%)",
-            }}
-          >
-            {field.map((vector, index) => renderVector(vector, index))}
-          </svg>
-          <div className="size-label">
-            {Math.round(actualFrameWidth)}x{Math.round(actualFrameHeight)}
-          </div>
+          {field.map((vector, index) => renderVector(vector, index))}
+        </svg>
+        <div className="size-label">
+          {Math.round(actualFrameWidth)}x{Math.round(actualFrameHeight)}
         </div>
-        <div className="form">
-          <div className="fields">
-            <div className="form-group">
-              <label htmlFor="shape-select">Shape</label>
-              <select
-                className="select"
-                id="shape-select"
-                value={shape}
-                onChange={(e) => setShape(e.target.value)}
-              >
-                <option value="line">Lines</option>
-                <option value="dot">Dots</option>
-                <option value="arrow">Arrows</option>
-                <option value="triangle">Triangles</option>
-                <option value="custom">
-                  {isWaitingForVectorSelection
-                    ? "Select a vector in Figma"
-                    : "Custom Shape"}
-                </option>
-              </select>
-            </div>
-
-            {shape === "custom" && (
-              <div className="form-group">
-                <label htmlFor="svg-textarea">Paste SVG Code</label>
-                <textarea
-                  id="svg-textarea"
-                  value={pastedSvg}
-                  onChange={handleSvgPaste}
-                  placeholder="Select a vector layer or paste your SVG code here"
-                  rows={4}
-                  style={{ width: "100%", resize: "vertical" }}
-                />
-              </div>
-            )}
-
-            {/* <Select
-              label="Shape"
+      </div>
+      <div className="form">
+        <div className="fields">
+          <div className="form-group">
+            <label htmlFor="shape-select">Shape</label>
+            <select
+              className="select"
+              id="shape-select"
               value={shape}
-              onChange={(value) => setShape(value)}
-              withScrollArea={false}
-              allowDeselect={false}
-              data={[
-                { value: "line", label: "Lines" },
-                { value: "dot", label: "Dots" },
-                { value: "arrow", label: "Arrows" },
-                { value: "triangle", label: "Triangles" },
-                {
-                  value: "custom",
-                  label: isWaitingForVectorSelection
-                    ? "Select a vector in Figma"
-                    : "Custom Shape",
-                },
-              ]}
-            /> */}
+              onChange={(e) => setShape(e.target.value)}
+            >
+              <option value="line">Lines</option>
+              <option value="dot">Dots</option>
+              <option value="arrow">Arrows</option>
+              <option value="triangle">Triangles</option>
+              <option value="custom">
+                {isWaitingForVectorSelection
+                  ? "Select a vector in Penpot"
+                  : "Custom Shape"}
+              </option>
+            </select>
+          </div>
 
-            {/* {shape === "custom" && (
-              <Textarea
-                label="Paste SVG Code"
+          {shape === "custom" && (
+            <div className="form-group">
+              <label htmlFor="svg-textarea">Paste SVG Code</label>
+              <textarea
+                id="svg-textarea"
                 value={pastedSvg}
                 onChange={handleSvgPaste}
                 placeholder="Select a vector layer or paste your SVG code here"
-                minRows={4}
+                rows={4}
+                style={{ width: "100%", resize: "vertical" }}
               />
-            )} */}
+            </div>
+          )}
 
-            {/* <Select
-              label="Field Type"
+          <div className="form-group">
+            <label htmlFor="field-type-select">Field Type</label>
+            <select
+              className="select"
+              id="field-type-select"
               value={fieldType}
-              onChange={setFieldType}
-              withScrollArea={false}
-              allowDeselect={false}
-              data={[
-                { value: "magnetic", label: "Magnetic Field" },
-                { value: "grid", label: "Grid" },
-                { value: "fluid", label: "Fluid Flow" },
-                { value: "electric", label: "Electric Field" },
-                { value: "vortex", label: "Vortex" },
-                { value: "sink", label: "Sink" },
-                { value: "source", label: "Source" },
-                { value: "saddle", label: "Saddle Point" },
-                { value: "wind", label: "Wind Flow" },
-                { value: "half-screen", label: "Half Screen" },
-              ]}
-            /> */}
+              onChange={(e) => setFieldType(e.target.value)}
+            >
+              <option value="magnetic">Magnetic Field</option>
+              <option value="grid">Grid</option>
+              <option value="fluid">Fluid Flow</option>
+              <option value="electric">Electric Field</option>
+              <option value="vortex">Vortex</option>
+              <option value="sink">Sink</option>
+              <option value="source">Source</option>
+              <option value="saddle">Saddle Point</option>
+              <option value="wind">Wind Flow</option>
+              <option value="half-screen">Half Screen</option>
+            </select>
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="field-type-select">Field Type</label>
-              <select
-                className="select"
-                id="field-type-select"
-                value={fieldType}
-                onChange={(e) => setFieldType(e.target.value)}
-              >
-                <option value="magnetic">Magnetic Field</option>
-                <option value="grid">Grid</option>
-                <option value="fluid">Fluid Flow</option>
-                <option value="electric">Electric Field</option>
-                <option value="vortex">Vortex</option>
-                <option value="sink">Sink</option>
-                <option value="source">Source</option>
-                <option value="saddle">Saddle Point</option>
-                <option value="wind">Wind Flow</option>
-                <option value="half-screen">Half Screen</option>
-              </select>
-            </div>
+          <div className="form-group counter-container">
+            <label htmlFor="rows-input">
+              Rows <span className="value-span">{rows}</span>
+            </label>
 
-            {/* <div className="counter-wrapper">
-              <NumberInput
-                label="Rows"
-                value={rows}
-                onChange={(val) => setRows(Math.max(2, val))}
-                allowNegative={false}
-                min={2}
-                max={500}
-              />
-              <NumberInput
-                label="Columns"
-                value={columns}
-                onChange={(val) => setColumns(Math.max(2, val))}
-                allowNegative={false}
-                min={2}
-                max={500}
-              />
-            </div> */}
-
-            {/* <div className="counter-wrapper"> */}
-            <div className="form-group counter-container">
-              <label htmlFor="rows-input">Rows</label>
-              <input
-                id="rows-input"
-                type="number"
-                value={rows}
-                onChange={(e) => {
-                  const value = parseInt(e.target.value, 10);
-                  const isValid = !isNaN(value) && value >= 2;
-                  setRows(isValid ? value : 2);
-                }}
-                min="2"
-                max="500"
-                step="1" // Ensure it's an integer input
-                style={{ width: "100%" }}
-              />
-            </div>
-
-            <div className="form-group counter-container">
-              <label htmlFor="columns-input">Columns</label>
-              <input
-                id="columns-input"
-                type="number"
-                value={columns}
-                onChange={(e) => {
-                  const value = parseInt(e.target.value, 10);
-                  // Check if the input is a valid integer and greater than or equal to 2
-                  const isValid = !isNaN(value) && value >= 2;
-                  setColumns(isValid ? value : 2);
-                }}
-                min="2"
-                max="500"
-                step="1" // Ensure it's an integer input
-                style={{ width: "100%" }}
-              />
-            </div>
-            {/* </div> */}
-
-            <CustomColorInput
-              label="Background Color"
-              value={backgroundColor}
-              onChange={setBackgroundColor}
-              format="hex"
+            <input
+              id="rows-input"
+              type="range"
+              min={2}
+              max={100}
+              step={1}
+              value={rows}
+              onChange={(e) => setRows(Number(e.target.value))}
+              style={{ width: "100%" }}
             />
+          </div>
 
-            <CustomColorInput
-              label="Shape Color"
-              value={shapeColor}
-              onChange={setShapeColor}
-              format="hex"
+          <div className="form-group counter-container">
+            <label htmlFor="columns-input">
+              Columns <span className="value-span">{columns}</span>
+            </label>
+
+            <input
+              id="columns-input"
+              type="range"
+              min={2}
+              max={100}
+              step={1}
+              value={columns}
+              onChange={(e) => setColumns(Number(e.target.value))}
+              style={{ width: "100%" }}
             />
+          </div>
+          {/* </div> */}
 
-            {/* 
-            <Select
-              label="Gradient Type"
+          <CustomColorInput
+            label="Background Color"
+            value={backgroundColor}
+            onChange={setBackgroundColor}
+            format="hex"
+          />
+
+          <CustomColorInput
+            label="Shape Color"
+            value={shapeColor}
+            onChange={setShapeColor}
+            format="hex"
+          />
+
+          <div className="form-group">
+            <label htmlFor="gradient-type-select">Gradient Type</label>
+            <select
+              className="select"
+              id="gradient-type-select"
               value={gradientType}
-              onChange={setGradientType}
-              withScrollArea={false}
-              allowDeselect={false}
-              data={[
-                { value: "none", label: "None" },
-                { value: "angular", label: "Angular Gradient" },
-                { value: "radial", label: "Radial Gradient" },
-                { value: "wave", label: "Wave Gradient" },
-              ]}
-            /> */}
+              onChange={(e) => setGradientType(e.target.value)}
+            >
+              <option value="none">None</option>
+              <option value="angular">Angular Gradient</option>
+              <option value="radial">Radial Gradient</option>
+              <option value="wave">Wave Gradient</option>
+            </select>
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="gradient-type-select">Gradient Type</label>
-              <select
-                className="select"
-                id="gradient-type-select"
-                value={gradientType}
-                onChange={(e) => setGradientType(e.target.value)}
-              >
-                <option value="none">None</option>
-                <option value="angular">Angular Gradient</option>
-                <option value="radial">Radial Gradient</option>
-                <option value="wave">Wave Gradient</option>
-              </select>
-            </div>
+          <div className="divider"></div>
 
-            {/* <Checkbox
-              label="Use selected frame size"
-              checked={fillParent}
-              onChange={(event) => setFillParent(event.currentTarget.checked)}
-            /> */}
+          {renderControl("X Offset", xOffset, setXOffset, -50, 50, 1, "%")}
+          {renderControl("Y Offset", yOffset, setYOffset, -50, 50, 1, "%")}
+          {renderControl(
+            "Field Rotation",
+            direction,
+            setDirection,
+            0,
+            360,
+            1,
+            "°"
+          )}
 
-            <div className="form-group">
-              <label htmlFor="use-frame-size-checkbox">
-                <input
-                  id="use-frame-size-checkbox"
-                  type="checkbox"
-                  checked={fillParent}
-                  onChange={(event) => setFillParent(event.target.checked)}
-                />
-                Use selected frame size
-              </label>
-            </div>
+          <div className="form-group">
+            <label htmlFor="additional-spiral-checkbox">
+              <input
+                id="additional-spiral-checkbox"
+                type="checkbox"
+                checked={spiral}
+                onChange={(event) => setSpiral(event.target.checked)}
+              />
+              Additional spiral
+            </label>
+          </div>
 
-            <div className="divider"></div>
-
-            {renderControl("X Offset", xOffset, setXOffset, -50, 50, 1, "%")}
-            {renderControl("Y Offset", yOffset, setYOffset, -50, 50, 1, "%")}
-            {renderControl(
-              "Field Rotation",
-              direction,
-              setDirection,
+          {spiral &&
+            renderControl(
+              "Spiral Intensity",
+              spiralIntensity,
+              setSpiralIntensity,
               0,
-              360,
               1,
-              "°"
-            )}
-
-            {/* <Checkbox
-              label="Additional spiral"
-              checked={spiral}
-              onChange={(event) => setSpiral(event.currentTarget.checked)}
-            /> */}
-
-            <div className="form-group">
-              <label htmlFor="additional-spiral-checkbox">
-                <input
-                  id="additional-spiral-checkbox"
-                  type="checkbox"
-                  checked={spiral}
-                  onChange={(event) => setSpiral(event.target.checked)}
-                />
-                Additional spiral
-              </label>
-            </div>
-
-            {spiral &&
-              renderControl(
-                "Spiral Intensity",
-                spiralIntensity,
-                setSpiralIntensity,
-                0,
-                1,
-                0.1,
-                "",
-                !spiral
-              )}
-
-            {renderControl(
-              "Field Strength",
-              intensity,
-              setIntensity,
               0.1,
-              20,
-              0.1,
-              "x"
+              "",
+              !spiral
             )}
 
-            {(shape === "line" || shape === "arrow") && (
-              <>
-                {renderControl(
-                  "Line Length",
-                  vectorScale,
-                  setVectorScale,
-                  0.1,
-                  12,
-                  0.1,
-                  "x"
-                )}
-                {renderControl(
-                  "Line Thickness",
-                  lineThickness,
-                  setLineThickness,
-                  0.1,
-                  12,
-                  0.1,
-                  "px"
-                )}
-                {shape === "line" && (
-                  // <Checkbox
-                  //   label="Rounded corners"
-                  //   checked={roundedCorners}
-                  //   onChange={(event) =>
-                  //     setRoundedCorners(event.currentTarget.checked)
-                  //   }
-                  // />
+          {renderControl(
+            "Field Strength",
+            intensity,
+            setIntensity,
+            0.1,
+            20,
+            0.1,
+            "x"
+          )}
 
-                  <div className="form-group">
-                    <label htmlFor="rounded-corners-checkbox">
-                      <input
-                        id="rounded-corners-checkbox"
-                        type="checkbox"
-                        checked={roundedCorners}
-                        onChange={(event) =>
-                          setRoundedCorners(event.target.checked)
-                        }
-                      />
-                      Rounded Corners
-                    </label>
-                  </div>
-                )}
-              </>
-            )}
-
-            {(shape === "dot" || shape === "triangle" || shape === "custom") &&
-              renderControl(
-                "Shape Size",
-                shapeSize,
-                setShapeSize,
+          {(shape === "line" || shape === "arrow") && (
+            <>
+              {renderControl(
+                "Line Length",
+                vectorScale,
+                setVectorScale,
                 0.1,
-                10,
+                12,
                 0.1,
                 "x"
               )}
+              {renderControl(
+                "Line Thickness",
+                lineThickness,
+                setLineThickness,
+                0.1,
+                12,
+                0.1,
+                "px"
+              )}
+              {shape === "line" && (
+                // <Checkbox
+                //   label="Rounded corners"
+                //   checked={roundedCorners}
+                //   onChange={(event) =>
+                //     setRoundedCorners(event.currentTarget.checked)
+                //   }
+                // />
 
-            {/* {renderControl("Vector Spacing", spacing, setSpacing, 0.5, 2, 0.1, "x")} */}
-            {renderControl(
-              "X Spacing",
-              xSpacing,
-              setXSpacing,
-              0.5,
+                <div className="form-group">
+                  <label htmlFor="rounded-corners-checkbox">
+                    <input
+                      id="rounded-corners-checkbox"
+                      type="checkbox"
+                      checked={roundedCorners}
+                      onChange={(event) =>
+                        setRoundedCorners(event.target.checked)
+                      }
+                    />
+                    Rounded Corners
+                  </label>
+                </div>
+              )}
+            </>
+          )}
+
+          {(shape === "dot" || shape === "triangle" || shape === "custom") &&
+            renderControl(
+              "Shape Size",
+              shapeSize,
+              setShapeSize,
+              0.1,
               10,
               0.1,
               "x"
             )}
-            {renderControl(
-              "Y Spacing",
-              ySpacing,
-              setYSpacing,
-              0.5,
-              10,
-              0.1,
-              "x"
-            )}
-          </div>
-          <div className="button-wrapper">
-            {/* <Button className="secondary-button" onClick={resetState}>
-              Reset
-            </Button> */}
 
-            <button
-              id="reset-btn"
-              className="secondary-button"
-              onClick={resetState}
-            >
-              Reset
-            </button>
+          {/* {renderControl("Vector Spacing", spacing, setSpacing, 0.5, 2, 0.1, "x")} */}
+          {renderControl("X Spacing", xSpacing, setXSpacing, 0.5, 10, 0.1, "x")}
+          {renderControl("Y Spacing", ySpacing, setYSpacing, 0.5, 10, 0.1, "x")}
+        </div>
+        <div className="button-wrapper">
+          <button
+            id="reset-btn"
+            className="secondary-button"
+            onClick={resetState}
+          >
+            Reset
+          </button>
 
-            <button
-              id="send-to-penpot-btn"
-              className="primary-button"
-              onClick={() => sendSvgToFigma()}
-            >
-              Create
-            </button>
-          </div>
+          <button
+            id="send-to-penpot-btn"
+            className="primary-button"
+            onClick={() => sendSvgToPenpot()}
+          >
+            Create
+          </button>
         </div>
       </div>
-    </MantineProvider>
+    </div>
   );
 }
 
