@@ -1,5 +1,6 @@
-# React example plugin
+# Patt
 
-This is a plugin example for penpot.
+## Plugin to generate vector patterns on Penpot
 
-For the full documentation go to: [Plugins](https://help.penpot.app/plugins/).
+For Penpot plugin docs: [Plugins](https://help.penpot.app/plugins/). <br>
+This is forked from [destefanis/vector-field-plugin](https://github.com/destefanis/vector-field-plugin)
