@@ -14,3 +14,4 @@ This is forked from [destefanis/vector-field-plugin](https://github.com/destefan
 
 
 Hosted on Netlify: https://patt-plugin.netlify.app/ 
+To use the plugin: https://penpot.app/penpothub/plugins/patt
