@@ -626,24 +626,26 @@ function App() {
     unit = "",
     disabled = false
   ) => (
-    <div key={label}>
-      <label>
+    <div key={label} className="form-group">
+      <label htmlFor="step" className="caption">
         {label}: <span className="value-span">{value.toFixed(2)}</span>{" "}
         <span className="unit-span">{unit}</span>
       </label>
 
-      <div>
-        <input
-          type="range"
-          min={min}
-          max={max}
-          step={step}
-          value={value}
-          onChange={(e) => setValue(Number(e.target.value))}
-          disabled={disabled}
-          style={{ width: "100%" }}
-        />
-      </div>
+      <input
+        type="range"
+        id="step"
+        min={min}
+        max={max}
+        step={step}
+        value={value}
+        onChange={(e) => setValue(Number(e.target.value))}
+        disabled={disabled}
+        style={{
+          width: "100%",
+        }}
+        className={theme === "light" ? "light-range" : "dark-range"}
+      />
     </div>
   );
 
@@ -676,7 +678,9 @@ function App() {
       <div className="form">
         <div className="fields">
           <div className="form-group">
-            <label htmlFor="shape-select">Shape</label>
+            <label htmlFor="shape-select" className="caption">
+              Shape
+            </label>
             <select
               className="select"
               id="shape-select"
@@ -710,7 +714,9 @@ function App() {
           )}
 
           <div className="form-group">
-            <label htmlFor="field-type-select">Field Type</label>
+            <label htmlFor="field-type-select" className="caption">
+              Field Type
+            </label>
             <select
               className="select"
               id="field-type-select"
@@ -731,7 +737,7 @@ function App() {
           </div>
 
           <div className="form-group counter-container">
-            <label htmlFor="rows-input">
+            <label htmlFor="rows-input" className="caption">
               Rows <span className="value-span">{rows}</span>
             </label>
 
@@ -744,11 +750,12 @@ function App() {
               value={rows}
               onChange={(e) => setRows(Number(e.target.value))}
               style={{ width: "100%" }}
+              className={theme === "light" ? "light-range" : "dark-range"}
             />
           </div>
 
           <div className="form-group counter-container">
-            <label htmlFor="columns-input">
+            <label htmlFor="columns-input" className="caption">
               Columns <span className="value-span">{columns}</span>
             </label>
 
@@ -761,6 +768,7 @@ function App() {
               value={columns}
               onChange={(e) => setColumns(Number(e.target.value))}
               style={{ width: "100%" }}
+              className={theme === "light" ? "light-range" : "dark-range"}
             />
           </div>
           {/* </div> */}
@@ -780,7 +788,9 @@ function App() {
           />
 
           <div className="form-group">
-            <label htmlFor="gradient-type-select">Gradient Type</label>
+            <label htmlFor="gradient-type-select" className="caption">
+              Gradient Type
+            </label>
             <select
               className="select"
               id="gradient-type-select"
@@ -807,19 +817,23 @@ function App() {
             1,
             "°"
           )}
-
-          <div className="form-group">
-            <label htmlFor="additional-spiral-checkbox">
+          <div>
+            <div
+              className="checkbox-container checkbox-custom"
+              data-check="true"
+            >
               <input
+                className="checkbox-input"
                 id="additional-spiral-checkbox"
                 type="checkbox"
                 checked={spiral}
                 onChange={(event) => setSpiral(event.target.checked)}
               />
-              Additional spiral
-            </label>
+              <label htmlFor="additional-spiral-checkbox" className="caption">
+                Additional spiral
+              </label>
+            </div>
           </div>
-
           {spiral &&
             renderControl(
               "Spiral Intensity",
@@ -863,17 +877,10 @@ function App() {
                 "px"
               )}
               {shape === "line" && (
-                // <Checkbox
-                //   label="Rounded corners"
-                //   checked={roundedCorners}
-                //   onChange={(event) =>
-                //     setRoundedCorners(event.currentTarget.checked)
-                //   }
-                // />
-
-                <div className="form-group">
-                  <label htmlFor="rounded-corners-checkbox">
+                <div>
+                  <div className="checkbox-container checkbox-custom">
                     <input
+                      className="checkbox-input"
                       id="rounded-corners-checkbox"
                       type="checkbox"
                       checked={roundedCorners}
@@ -881,8 +888,13 @@ function App() {
                         setRoundedCorners(event.target.checked)
                       }
                     />
-                    Rounded Corners
-                  </label>
+                    <label
+                      htmlFor="rounded-corners-checkbox"
+                      className="caption"
+                    >
+                      Rounded Corners
+                    </label>
+                  </div>
                 </div>
               )}
             </>
@@ -906,15 +918,15 @@ function App() {
         <div className="button-wrapper">
           <button
             id="reset-btn"
-            className="secondary-button"
             onClick={resetState}
+            data-appearance="secondary"
           >
             Reset
           </button>
 
           <button
             id="send-to-penpot-btn"
-            className="primary-button"
+            data-appearance="primary"
             onClick={() => sendSvgToPenpot()}
           >
             Create

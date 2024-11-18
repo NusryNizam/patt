@@ -33,7 +33,6 @@
 .divider {
   display: block;
   margin: 16px -20px;
-  border-bottom: 1px solid var(--db-quaternary);
 }
 
 .form {
@@ -41,7 +40,6 @@
   flex-flow: column;
   width: 260px;
   height: 600px;
-  border-left: 1px solid var(--db-quaternary);
 }
 
 .fields {
@@ -54,18 +52,7 @@
   display: flex;
   justify-content: flex-end;
   padding: 12px 20px;
-  border-top: 1px solid var(--db-quaternary);
   gap: 8px;
-}
-
-.secondary-button {
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-}
-
-.secondary-button:hover {
-  background-color: transparent;
 }
 
 .counter-wrapper {
@@ -77,7 +64,7 @@
 
 .value-span {
   margin-left: 4px;
-  color: var(--df-primary);
+  font-weight: 600;
 }
 
 .unit-span {
@@ -231,20 +218,10 @@ select,
 input {
   padding: 0.5rem;
   border-radius: 0.25rem;
-  accent-color: var(--da-primary);
 }
 
 input[type="color"] {
   padding: 2px 4px;
-}
-
-.form label {
-  font-size: 11px;
-  display: block;
-  font-weight: 500;
-  line-height: 18px;
-  color: var(--df-secondary);
-  margin-bottom: var(--spacing-4);
 }
 
 .fields > div {
@@ -254,29 +231,35 @@ input[type="color"] {
   margin-bottom: 1rem;
 }
 
-.primary-button {
-  background-color: var(--da-primary);
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  color: var(--db-primary);
-  font-weight: 600;
-  cursor: pointer;
+label {
+  margin-bottom: 4px;
 }
 
-.primary-button:disabled {
-  background-color: var(--da-primary-muted);
+.block label {
+  display: block;
+  margin-bottom: -8px;
 }
 
-.primary-button:hover {
-  background-color: var(--da-tertiary);
+.light-range {
+  accent-color: var(--la-primary);
+}
+.dark-range {
+  accent-color: var(--da-primary);
 }
 
-.secondary-button {
-  padding: 0.5rem 0.75rem;
-  border-radius: 8px;
-  cursor: pointer;
+.checkbox-custom {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: var(--spacing-8);
+  align-items: center;
 }
 
-.secondary-button:hover {
-  background-color: var(--db-quaternary);
+.checkbox-custom label {
+  margin: 0;
+}
+
+.checkbox-container .checkbox-input[type="checkbox"]:after {
+  margin-block-start: -6px;
+  margin-inline-start: -2px;
 }

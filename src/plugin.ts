@@ -42,13 +42,12 @@ penpot.ui.onMessage((data: any) => {
       board.boardX = 0;
       board.boardY = 0;
     }
-    // }
   }
 });
 
 function updateSelectedFrame() {
   const selection = penpot.selection;
-  if (selection.length === 1 && selection[0].type === "board") {
+  if (selection.length === 1 && selection[0]?.type === "board") {
     lastSelectedFrame = selection[0];
     sendFrameInfo(lastSelectedFrame);
   } else {
@@ -77,9 +76,4 @@ function sendFrameInfo(board: Board) {
 
 penpot.on("selectionchange", () => {
   updateSelectedFrame();
-
-  // const selection = penpot.selection;
-  // if (selection.length === 1 && selection[0].type === 'board') {
-  //   sendVectorInfo(selection[0]);
-  // }
 });
